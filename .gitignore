@@ -1,0 +1,66 @@
+# ══════════════════════════════════════════════
+#  SUVIDHA — Global .gitignore
+# ══════════════════════════════════════════════
+
+# ─── OS Files ─────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# ─── IDE ──────────────────────────────────────
+.idea/
+.vscode/
+*.iml
+*.code-workspace
+
+# ─── Environment & Secrets ────────────────────
+.env
+.env.local
+.env.production
+*.key
+*.pem
+
+# ─── Flutter / Dart (mobile-app) ──────────────
+mobile-app/.dart_tool/
+mobile-app/.flutter-plugins
+mobile-app/.flutter-plugins-dependencies
+mobile-app/.packages
+mobile-app/build/
+mobile-app/.metadata
+mobile-app/pubspec.lock
+mobile-app/android/.gradle/
+mobile-app/android/local.properties
+mobile-app/android/app/debug/
+mobile-app/android/app/profile/
+mobile-app/android/app/release/
+mobile-app/ios/Pods/
+mobile-app/ios/.symlinks/
+mobile-app/ios/Flutter/Flutter.framework
+mobile-app/ios/Flutter/Flutter.podspec
+*.apk
+*.aab
+
+# ─── Node.js (web-dashboard, kiosk-app, kiosk-backend) ───
+node_modules/
+dist/
+.cache/
+*.log
+npm-debug.log*
+package-lock.json
+
+# ─── Python (backend) ────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+venv/
+.venv/
+*.db
+*.sqlite3
+uploads/
+
+# ─── Build Artifacts ─────────────────────────
+*.zip
+*.tar.gz
