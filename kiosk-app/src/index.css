@@ -1,0 +1,301 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base Reset ─────────────────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+  height: 100vh;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: #F0F4F8;
+  color: #1A1A2E;
+  height: 100vh;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Focus Styles for Accessibility ─────────────── */
+*:focus-visible {
+  outline: 3px solid #FF9933;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Hide default focus for mouse users */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ── Skip to Content Link ───────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 9999;
+  background: #0C2340;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 0 0 8px 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* ── Scrollbar (hidden for kiosk) ───────────────── */
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ── Glass Morphism Utilities ───────────────────── */
+.glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-dark {
+  background: rgba(12, 35, 64, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ── Gradient Backgrounds ───────────────────────── */
+.bg-gov-gradient {
+  background: linear-gradient(135deg, #0C2340 0%, #1E3F6B 50%, #2C5485 100%);
+}
+
+.bg-saffron-gradient {
+  background: linear-gradient(135deg, #FF9933 0%, #FB8C00 100%);
+}
+
+.bg-tricolor-bar {
+  background: linear-gradient(90deg, #FF9933 0%, #FF9933 33%, #FFFFFF 33%, #FFFFFF 66%, #138808 66%, #138808 100%);
+  height: 4px;
+}
+
+/* ── Touch Optimized ────────────────────────────── */
+@layer utilities {
+  .touch-target {
+    min-height: 48px;
+    min-width: 48px;
+  }
+}
+
+/* ── Reduced Motion ─────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── High Contrast Mode ─────────────────────────── */
+@media (prefers-contrast: high) {
+  body {
+    background-color: #000;
+    color: #fff;
+  }
+
+  .glass,
+  .glass-dark {
+    background: #000;
+    border: 2px solid #fff;
+    backdrop-filter: none;
+  }
+}
+
+/* ── Form Inputs ────────────────────────────────── */
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  border: 1.5px solid #E2E8F0;
+  background: #fff;
+  font-size: 0.875rem;
+  color: #1A1A2E;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input::placeholder {
+  color: #94A3B8;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #FF9933;
+  box-shadow: 0 0 0 3px rgba(255, 153, 51, 0.15);
+}
+
+.form-input[aria-invalid="true"] {
+  border-color: #DC2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+/* ── Accessibility Toolbar ──────────────────────── */
+.a11y-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: #1E293B;
+  padding: 0.4rem 1rem;
+  font-size: 0.8rem;
+  color: #CBD5E1;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.a11y-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: transparent;
+  border: 1.5px solid transparent;
+  color: #CBD5E1;
+  padding: 0.3rem 0.65rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.a11y-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #F1F5F9;
+}
+
+.a11y-btn:focus-visible {
+  outline: 2px solid #FF9933;
+  outline-offset: 1px;
+}
+
+.a11y-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.a11y-btn--on,
+.a11y-btn--active {
+  background: rgba(255, 153, 51, 0.15);
+  color: #FF9933;
+  border-color: rgba(255, 153, 51, 0.3);
+}
+
+.a11y-btn-text {
+  pointer-events: none;
+}
+
+.a11y-font-icon {
+  font-weight: 700;
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.a11y-font-icon--lg {
+  font-size: 1rem;
+}
+
+.a11y-divider {
+  width: 1px;
+  height: 1.1rem;
+  background: #475569;
+  margin: 0 0.35rem;
+  flex-shrink: 0;
+}
+
+.a11y-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.a11y-lang-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #CBD5E1;
+}
+
+.a11y-lang-select {
+  background: transparent;
+  border: 1.5px solid #475569;
+  color: #CBD5E1;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.4rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  appearance: auto;
+}
+
+.a11y-lang-select:focus-visible {
+  outline: 2px solid #FF9933;
+  outline-offset: 1px;
+}
+
+.a11y-lang-select option {
+  background: #1E293B;
+  color: #CBD5E1;
+}
+
+/* ── Dark Mode ─────────────────────────────────── */
+html.dark body {
+  background-color: #0F172A;
+  color: #E2E8F0;
+}
+
+html.dark .glass {
+  background: rgba(30, 41, 59, 0.85);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+html.dark .form-input {
+  background: #1E293B;
+  border-color: #334155;
+  color: #E2E8F0;
+}
+
+html.dark .form-input::placeholder {
+  color: #64748B;
+}
+
+/* ── Print Styles ───────────────────────────────── */
+@media print {
+
+  .no-print,
+  .a11y-bar {
+    display: none !important;
+  }
+}
