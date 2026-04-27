@@ -443,28 +443,6 @@ SUVIDHA uses **Google Gemini Vision API** directly from the mobile app for zero-
 
 ---
 
-## 🌐 Environment Variables
-
-### Mobile App (`mobile-app/lib/config/constants.dart`)
-```dart
-static const String geminiApiKey = 'YOUR_GEMINI_API_KEY';
-static const bool demoMode = true; // Set false for production
-```
-
-### Backend (`backend/.env`)
-```env
-GEMINI_API_KEY=your_gemini_api_key
-DATABASE_URL=postgresql://user:pass@localhost:5432/suvidha
-JWT_SECRET_KEY=your_secret_key
-```
-
-### Web Dashboard (`web-dashboard/.env`)
-```env
-VITE_API_URL=http://localhost:5000/api
-```
-
----
-
 ## 🚀 Deployment
 
 ### Mobile App
