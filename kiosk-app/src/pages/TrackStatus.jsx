@@ -140,7 +140,6 @@ export default function TrackStatus() {
               onChange={(e) => setTrackingId(e.target.value.toUpperCase())}
               placeholder="e.g., CMP20260101001"
               className="flex-1 px-4 py-3 rounded-xl border-2 border-gray-300 focus:border-assam-blue focus:outline-none text-lg font-semibold"
-              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
               aria-label="Enter complaint reference number"
             />
             <motion.button

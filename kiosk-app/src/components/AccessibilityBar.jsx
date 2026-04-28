@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
-import { Sun, Moon, Volume2, VolumeX, Globe } from "lucide-react";
+import { Sun, Moon, Volume2, VolumeX, Globe, Keyboard } from "lucide-react";
 import { useLanguage } from '../context/LanguageContext';
 import { useAccessibilityContext } from '../context/AccessibilityContext';
+import { useKeyboard } from '../context/KeyboardContext';
 
 const LANGUAGES = [
   { code: "en", label: "English" },
@@ -18,6 +19,7 @@ const STEP = 0.1;
 export default function AccessibilityBar() {
   const { lang, setLang, t } = useLanguage();
   const { screenReaderEnabled, toggleScreenReader, announce } = useAccessibilityContext();
+  const { isOpen, openKeyboard } = useKeyboard();
 
   /* ── Theme ─────────────────────────────────────── */
   const [isDark, setIsDark] = useState(() => {
@@ -131,6 +133,20 @@ export default function AccessibilityBar() {
       >
         {screenReaderEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
         <span className="a11y-btn-text">Screen Reader</span>
+      </button>
+
+      {/* Divider */}
+      <span className="a11y-divider" aria-hidden="true" />
+
+      {/* On-Screen Keyboard Toggle */}
+      <button
+        className={`a11y-btn ${isOpen ? 'a11y-btn--on' : ''}`}
+        onClick={() => openKeyboard({ currentValue: '', max: 999, onCommit: () => {} })}
+        aria-label="Open on-screen keyboard"
+        title="On-screen Keyboard"
+      >
+        <Keyboard size={16} />
+        <span className="a11y-btn-text">Keyboard</span>
       </button>
 
       {/* Divider */}

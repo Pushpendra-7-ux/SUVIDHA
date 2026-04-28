@@ -9,6 +9,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import LoginPage from './pages/LoginPage'
 import ProfilePage from './pages/ProfilePage'
 import LanguageSelect from './pages/LanguageSelect'
+import MoreLanguages from './pages/MoreLanguages'
 import MainMenu from './pages/MainMenu'
 import ServiceScreen from './pages/ServiceScreen'
 import LodgeComplaint from './pages/LodgeComplaint'
@@ -20,9 +21,16 @@ import ComplaintReview from './pages/ComplaintReview'
 import SuccessScreen from './pages/SuccessScreen'
 import PayBillFlow from './pages/PayBillFlow'
 import NewConnectionFlow from './pages/NewConnectionFlow'
+import GenericServiceFlow from './pages/GenericServiceFlow'
+import LoadExtensionFlow from './pages/LoadExtensionFlow'
+import MeterReplacementFlow from './pages/MeterReplacementFlow'
+import GasMeterServicesFlow from './pages/GasMeterServicesFlow'
+import PropertyTaxFlow from './pages/PropertyTaxFlow'
 import Header from './components/Header'
 import AccessibilityBar from './components/AccessibilityBar'
 import RouteAnnouncer from './components/RouteAnnouncer'
+import OnScreenKeyboard from './components/OnScreenKeyboard'
+import { KeyboardProvider } from './context/KeyboardContext'
 
 function OfflineBanner() {
   const [isOffline, setIsOffline] = useState(!navigator.onLine)
@@ -52,6 +60,7 @@ function App() {
   return (
     <LanguageProvider>
       <AccessibilityProvider>
+        <KeyboardProvider>
         <BrowserRouter>
           <AuthProvider>
         {/* Skip-to-content for accessibility */}
@@ -65,10 +74,13 @@ function App() {
             <AccessibilityBar />
           <Header />
           <RouteAnnouncer />
+          {/* Global On-Screen Keyboard — renders as fixed overlay */}
+          <OnScreenKeyboard />
           <main id="main-content" role="main" className="flex-1 overflow-hidden">
             <Routes>
               {/* Kiosk terminal screens */}
               <Route path="/" element={<LanguageSelect />} />
+              <Route path="/more-languages" element={<MoreLanguages />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
               <Route path="/home" element={<ProtectedRoute><MainMenu /></ProtectedRoute>} />
@@ -78,6 +90,16 @@ function App() {
               <Route path="/service/:serviceId/new" element={<ProtectedRoute><NewConnectionFlow /></ProtectedRoute>} />
               <Route path="/service/:serviceId/complaint" element={<ProtectedRoute><LodgeComplaint /></ProtectedRoute>} />
               <Route path="/service/:serviceId/trackStatus" element={<ProtectedRoute><TrackStatus /></ProtectedRoute>} />
+              
+              {/* Custom Realistic Flows */}
+              <Route path="/service/electricity/loadExtension" element={<ProtectedRoute><LoadExtensionFlow /></ProtectedRoute>} />
+              <Route path="/service/electricity/meterReplacement" element={<ProtectedRoute><MeterReplacementFlow /></ProtectedRoute>} />
+              <Route path="/service/gas/meterServices" element={<ProtectedRoute><GasMeterServicesFlow /></ProtectedRoute>} />
+              <Route path="/service/municipal/propertyTax" element={<ProtectedRoute><PropertyTaxFlow /></ProtectedRoute>} />
+              
+              {/* Fallback route for other service actions like loadExtension, meterReplacement, etc. */}
+              <Route path="/service/:serviceId/:actionId" element={<ProtectedRoute><GenericServiceFlow /></ProtectedRoute>} />
+              
               <Route path="/qr/:sessionId" element={<ProtectedRoute><QRDisplay /></ProtectedRoute>} />
               <Route path="/review/:sessionId" element={<ProtectedRoute><ComplaintReview /></ProtectedRoute>} />
 
@@ -90,9 +112,11 @@ function App() {
         </AutoLogoutManager>
           </AuthProvider>
         </BrowserRouter>
+        </KeyboardProvider>
       </AccessibilityProvider>
     </LanguageProvider>
   )
 }
 
 export default App
+

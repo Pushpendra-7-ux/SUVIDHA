@@ -1,7 +1,8 @@
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { CheckCircle2, Copy, Home, ExternalLink, FileText } from 'lucide-react'
+import { CheckCircle2, Copy, Home, FileText } from 'lucide-react'
+import { printReceipt } from '../utils/printReceipt'
 
 export default function SuccessScreen() {
   const { trackingId } = useParams()
@@ -157,14 +158,32 @@ export default function SuccessScreen() {
 
         <div className="flex flex-col sm:flex-row gap-4 w-full">
           <motion.button
-            onClick={() => {
-              setCopied(true)
-              setTimeout(() => setCopied(false), 2000)
-            }}
+            onClick={() => printReceipt({
+              title: isPayment ? 'Payment Receipt' : 'Complaint Submission Receipt',
+              refNo: trackingId,
+              department: 'SUVIDHA Kiosk System',
+              serviceType: isPayment ? 'Bill Payment' : 'Grievance Registration',
+              fields: isPayment
+                ? [
+                    { label: 'Transaction ID', value: trackingId },
+                    { label: 'Amount Paid', value: `₹${amount}` },
+                    { label: 'Payment Method', value: method },
+                    { label: 'Date & Time', value: new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) },
+                  ]
+                : [
+                    { label: 'Tracking Number', value: trackingId },
+                    { label: 'Status', value: 'Received – Under Review' },
+                    { label: 'Department', value: 'Municipal Corporation' },
+                    { label: 'Date Submitted', value: new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) },
+                  ],
+              note: isPayment
+                ? 'An SMS confirmation has been sent to your registered mobile number.'
+                : 'You will receive updates on your registered phone number. Use your tracking number to check status at any SUVIDHA kiosk.',
+            })}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             className="touch-target w-full flex-1 flex flex-col items-center justify-center bg-emerald-600 text-white font-bold text-xl py-5 rounded-2xl shadow-lg hover:bg-emerald-700 transition-colors mb-4 gap-2"
-            aria-label="Print Thermal Receipt"
+            aria-label="Print Receipt as PDF"
           >
             <FileText className="w-6 h-6" />
             Print Receipt

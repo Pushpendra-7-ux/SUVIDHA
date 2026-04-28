@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowLeft } from 'lucide-react'
 import { useLanguage } from '../context/LanguageContext'
+import NewsTicker from '../components/NewsTicker'
 
 export default function CategorySelect() {
   const navigate = useNavigate()
@@ -64,6 +65,8 @@ export default function CategorySelect() {
           {t('complaintRouteInfo')}
         </p>
       </div>
+      {/* Headlines GUI / News Ticker */}
+      <NewsTicker />
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, FileText, PlusCircle, AlertCircle, IndianRupee, Search, UserCog, Activity, Wrench, Droplets } from 'lucide-react'
+import { ArrowLeft, FileText, PlusCircle, AlertCircle, IndianRupee, Search, UserCog, Activity, Wrench, Droplets, Receipt } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useLanguage } from '../context/LanguageContext'
 import AuthenticationModal from '../components/AuthenticationModal'
@@ -40,7 +40,8 @@ const ServiceScreen = () => {
     municipal: { 
       title: t('municipal'), icon: '🏛️', theme: 'bg-indigo-50 text-indigo-600', border: 'border-indigo-200',
       actions: [
-        { id: 'waterConnection', label: t('waterConnection'), icon: Droplets, color: 'text-blue-600 bg-blue-100 border-blue-200', secure: true },
+        { id: 'propertyTax', label: t('propertyTax'), icon: Receipt, color: 'text-violet-600 bg-violet-100 border-violet-200', secure: true },
+        { id: 'waterConnection', label: t('waterConnection') || 'Water Connection', icon: Droplets, color: 'text-blue-600 bg-blue-100 border-blue-200', secure: true },
         { id: 'complaint', label: t('lodgeComplaint'), icon: AlertCircle, color: 'text-rose-600 bg-rose-100 border-rose-200', secure: false },
         { id: 'trackStatus', label: t('trackStatus'), icon: Search, color: 'text-slate-600 bg-slate-100 border-slate-200', secure: false },
         { id: 'credentials', label: t('updateCredentials'), icon: UserCog, color: 'text-emerald-600 bg-emerald-100 border-emerald-200', secure: true }
