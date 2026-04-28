@@ -1,0 +1,1 @@
+from utils.mail_service import mail, send_welcome_email
