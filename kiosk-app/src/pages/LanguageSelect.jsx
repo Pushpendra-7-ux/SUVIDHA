@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Monitor } from 'lucide-react'
+
 import { useLanguage } from '../context/LanguageContext'
 import NewsTicker from '../components/NewsTicker'
 
@@ -15,7 +15,7 @@ export default function LanguageSelect() {
   }
 
   return (
-    <div className="h-[calc(100vh-5.5rem)] bg-slate-50 text-slate-900 flex flex-col relative overflow-hidden">
+    <div className="h-full bg-slate-50 text-slate-900 flex flex-col relative">
 
       {/* ── News Ticker — immediately below the Header ── */}
       <NewsTicker />
@@ -24,7 +24,7 @@ export default function LanguageSelect() {
       <div className="absolute inset-0 bg-slate-100 bg-opacity-50 pointer-events-none -translate-x-1/2 -skew-x-12 transform-gpu" />
 
       {/* ── Main content — centred in remaining height ── */}
-      <div className="relative z-10 flex-1 flex flex-col sm:flex-row items-center justify-center gap-10 px-8 pb-16 max-w-5xl w-full mx-auto">
+      <div className="relative z-10 flex-1 flex flex-col sm:flex-row items-center justify-center gap-10 px-8 pb-4 max-w-5xl w-full mx-auto">
 
         {/* Left Side: Branding and Welcome */}
         <div className="flex-1 text-center sm:text-left">
@@ -34,7 +34,11 @@ export default function LanguageSelect() {
             transition={{ duration: 0.8 }}
             className="inline-block p-6 bg-white rounded-2xl border border-slate-200 mb-6 shadow-xl"
           >
-            <Monitor className="w-14 h-14 text-assam-blue mb-3 mx-auto sm:mx-0" strokeWidth={1.5} />
+            <img
+              src="/ODL.jpg"
+              alt="Ashoka Chakra"
+              className="w-40 h-40 object-contain mx-auto mb-3"
+            />
             <h1 className="text-4xl sm:text-5xl font-display font-extrabold tracking-tight mb-1 text-assam-blue">
               SUVIDHA <span className="text-assam-red">2026</span>
             </h1>
@@ -125,12 +129,12 @@ export default function LanguageSelect() {
         </motion.div>
       </div>
 
-      {/* Footer Logos — pinned above bottom edge */}
+      {/* Footer Logos — flush with bottom */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
-        className="absolute bottom-4 left-0 right-0 z-10 flex justify-center gap-8 items-center px-4"
+        className="relative z-10 flex justify-center gap-8 items-center px-4 py-3 w-full"
       >
         <img src="/DIGITALINDIA200X100_0.png" alt="Digital India" className="h-9 object-contain mix-blend-multiply" />
         <img src="/ANE.jpg" alt="ANE" className="h-9 object-contain mix-blend-multiply" />
