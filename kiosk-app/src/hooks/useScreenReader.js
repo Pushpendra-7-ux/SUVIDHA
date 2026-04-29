@@ -9,6 +9,26 @@ export const useScreenReader = (isEnabled) => {
   const isSpeakingRef = useRef(false)
   const currentUtteranceRef = useRef(null)
   const lastAnnouncedRef = useRef('')
+  const voicesRef = useRef([])
+
+  // Pre-load voices to avoid Windows/Chrome network voice latency bug
+  useEffect(() => {
+    const loadVoices = () => {
+      voicesRef.current = window.speechSynthesis?.getVoices() || []
+    }
+    loadVoices()
+    if (window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = loadVoices
+    }
+  }, [])
+
+  const getFastLocalVoice = useCallback(() => {
+    if (!voicesRef.current.length) return null;
+    // Prefer local English voices to prevent slow network fetching
+    return voicesRef.current.find(v => v.localService && v.lang.startsWith('en')) 
+        || voicesRef.current.find(v => v.localService) 
+        || voicesRef.current[0];
+  }, []);
 
   // Announce text via speech synthesis
   const announce = useCallback((text, priority = 'normal') => {
@@ -18,9 +38,12 @@ export const useScreenReader = (isEnabled) => {
     if (lastAnnouncedRef.current === text && priority === 'normal') return
 
     const utterance = new SpeechSynthesisUtterance(text)
-    utterance.rate = 0.9
+    utterance.rate = 1.15
     utterance.pitch = 1
     utterance.volume = 1
+    
+    const voice = getFastLocalVoice();
+    if (voice) utterance.voice = voice;
 
     if (priority === 'high') {
       // Cancel current speech and prioritize this announcement
@@ -62,7 +85,17 @@ export const useScreenReader = (isEnabled) => {
   const getElementAnnouncement = useCallback((element) => {
     if (!element) return ''
 
-    const text = element.textContent?.trim() || ''
+    // innerText is better than textContent as it ignores hidden text/SVG noise
+    let text = ''
+    if (element.innerText) {
+      text = element.innerText.trim()
+    } else if (element.textContent) {
+      text = element.textContent.trim()
+    }
+    
+    // Clean up excessive newlines from nested elements
+    text = text.replace(/\n+/g, ' ').trim()
+
     const ariaLabel = element.getAttribute('aria-label')
     const placeholder = element.getAttribute('placeholder')
     const type = element.getAttribute('type')
@@ -195,11 +228,56 @@ export const useScreenReader = (isEnabled) => {
     }
   }, [isEnabled])
 
+  // Sequentially read the entire page contents
+  const readEntirePage = useCallback((containerId = 'main-content') => {
+    if (!isEnabled) return;
+    
+    // Cancel any existing speech
+    window.speechSynthesis?.cancel();
+    utteranceQueueRef.current = [];
+    isSpeakingRef.current = false;
+    
+    const container = document.getElementById(containerId) || document.body;
+    
+    // Find all readable elements in order
+    const elements = container.querySelectorAll('h1, h2, h3, h4, h5, h6, p, button, a, label');
+    
+    let toRead = [];
+    elements.forEach(el => {
+      // Skip hidden elements or ones inside hidden parents
+      if (el.offsetParent === null || window.getComputedStyle(el).display === 'none') return;
+      
+      const announcement = getElementAnnouncement(el);
+      if (announcement && announcement.trim().length > 0) {
+        // avoid consecutive duplicates
+        if (toRead.length === 0 || toRead[toRead.length - 1] !== announcement) {
+           toRead.push(announcement);
+        }
+      }
+    });
+    
+    if (toRead.length > 0) {
+      // Start sequential reading
+      const firstText = toRead.shift();
+      announce(firstText, 'high'); // High priority to interrupt everything else
+      
+      // Queue the rest
+      toRead.forEach(text => {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 1.15;
+        const voice = getFastLocalVoice();
+        if (voice) utterance.voice = voice;
+        utteranceQueueRef.current.push(utterance);
+      });
+    }
+  }, [isEnabled, announce, getElementAnnouncement]);
+
   return {
     announce,
     announceClick,
     announcePage,
     getElementAnnouncement,
+    readEntirePage,
     isSpeaking: isSpeakingRef.current,
   }
 }

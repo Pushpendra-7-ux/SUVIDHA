@@ -12,7 +12,7 @@ export default function Header() {
       {/* Indian tricolor bar */}
       <div className="bg-tricolor-bar" aria-hidden="true" />
 
-      <div className="bg-white text-assam-blue shadow-sm border-b border-slate-200">
+      <div className="bg-white dark:bg-slate-900 text-assam-blue dark:text-white shadow-sm border-b border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Left — Emblem + Brand */}

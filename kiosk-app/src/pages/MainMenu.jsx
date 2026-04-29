@@ -90,7 +90,7 @@ function PendingBillsModal({ onClose, navigate }) {
         animate={{ y: 0 }}
         exit={{ y: '100%' }}
         transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-        className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-3xl shadow-2xl"
+        className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-slate-900 rounded-t-3xl shadow-2xl"
         style={{ maxHeight: '72vh' }}
       >
         {/* Handle */}
@@ -99,13 +99,13 @@ function PendingBillsModal({ onClose, navigate }) {
         </div>
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 pt-2 pb-4 border-b border-gray-100">
+        <div className="flex items-center justify-between px-6 pt-2 pb-4 border-b border-gray-100 dark:border-slate-800">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center">
               <Receipt className="w-5 h-5 text-red-500" />
             </div>
             <div>
-              <h3 className="text-lg font-extrabold text-gray-900 leading-tight">Pending Bills</h3>
+              <h3 className="text-lg font-extrabold text-gray-900 dark:text-white leading-tight">Pending Bills</h3>
               <p className="text-xs text-gray-400">
                 {pendingBills.length} bills &middot; Total due: <span className="font-semibold text-gray-700">{totalDue}</span>
               </p>
@@ -118,7 +118,7 @@ function PendingBillsModal({ onClose, navigate }) {
           </div>
           <button
             onClick={onClose}
-            className="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+            className="w-9 h-9 rounded-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 flex items-center justify-center transition-colors"
           >
             <X className="w-5 h-5 text-gray-500" />
           </button>
@@ -134,8 +134,8 @@ function PendingBillsModal({ onClose, navigate }) {
               transition={{ delay: idx * 0.06 }}
               className={`flex items-center gap-4 p-4 rounded-2xl border ${
                 bill.overdue
-                  ? 'border-red-200 bg-red-50/60'
-                  : 'border-gray-100 bg-white hover:bg-gray-50'
+                  ? 'border-red-200 dark:border-red-900/50 bg-red-50/60 dark:bg-red-900/20'
+                  : 'border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-700'
               } transition-colors`}
             >
               {/* Icon */}
@@ -146,7 +146,7 @@ function PendingBillsModal({ onClose, navigate }) {
               {/* Info */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-0.5">
-                  <p className="font-bold text-gray-800 text-sm truncate">{bill.label}</p>
+                  <p className="font-bold text-gray-800 dark:text-white text-sm truncate">{bill.label}</p>
                   {bill.overdue && (
                     <span className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-red-500 text-white">
                       OVERDUE
@@ -161,7 +161,7 @@ function PendingBillsModal({ onClose, navigate }) {
 
               {/* Amount + Pay */}
               <div className="shrink-0 text-right flex flex-col items-end gap-2">
-                <span className="text-xl font-extrabold text-gray-900">{bill.amount}</span>
+                <span className="text-xl font-extrabold text-gray-900 dark:text-white">{bill.amount}</span>
                 <button
                   onClick={() => { onClose(); navigate(bill.path) }}
                   className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all ${
@@ -189,7 +189,7 @@ export default function MainMenu() {
   const [billsOpen, setBillsOpen] = useState(false)
 
   return (
-    <section className="h-full flex flex-col bg-slate-50 relative overflow-hidden" aria-label="Main Menu">
+    <section className="h-full flex flex-col bg-slate-50 dark:bg-slate-900 relative overflow-hidden" aria-label="Main Menu">
 
       {/* News Ticker */}
       <NewsTicker />
@@ -203,8 +203,8 @@ export default function MainMenu() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center"
         >
-          <h2 className="text-3xl font-display font-extrabold text-assam-blue">{t('selectService')}</h2>
-          <p className="text-base text-gray-500 mt-0.5">{t('howCanWeHelp')}</p>
+          <h2 className="text-3xl font-display font-extrabold text-assam-blue dark:text-blue-400">{t('selectService')}</h2>
+          <p className="text-base text-gray-500 dark:text-gray-400 mt-0.5">{t('howCanWeHelp')}</p>
         </motion.div>
 
         {/* 3 Primary Department Cards */}
@@ -216,12 +216,12 @@ export default function MainMenu() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.08 }}
               onClick={() => navigate(svc.path)}
-              className={`group flex flex-col items-center justify-center bg-white rounded-2xl shadow-md border-2 border-gray-100 ${svc.accentBorder} py-8 gap-4 hover:shadow-xl ${svc.glow} transition-all focus:outline-none focus:ring-4 focus:ring-assam-blue`}
+              className={`group flex flex-col items-center justify-center bg-white dark:bg-slate-800 rounded-2xl shadow-md border-2 border-gray-100 dark:border-slate-700 ${svc.accentBorder} py-8 gap-4 hover:shadow-xl ${svc.glow} transition-all focus:outline-none focus:ring-4 focus:ring-assam-blue`}
             >
               <div className={`w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br ${svc.color} text-white shadow-md group-hover:scale-110 transition-transform`}>
                 <svc.icon className="w-8 h-8" />
               </div>
-              <span className="text-xl font-bold text-gray-800 group-hover:text-assam-blue transition-colors text-center leading-tight px-2">
+              <span className="text-xl font-bold text-gray-800 dark:text-white group-hover:text-assam-blue dark:group-hover:text-blue-400 transition-colors text-center leading-tight px-2">
                 {t(svc.id)}
               </span>
             </motion.button>
@@ -237,14 +237,14 @@ export default function MainMenu() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             onClick={() => setBillsOpen(true)}
-            className="group relative flex items-center gap-4 bg-white rounded-2xl shadow-md border-2 border-gray-100 hover:border-red-400 hover:shadow-lg transition-all p-5 focus:outline-none focus:ring-4 focus:ring-red-400 overflow-hidden"
+            className="group relative flex items-center gap-4 bg-white dark:bg-slate-800 rounded-2xl shadow-md border-2 border-gray-100 dark:border-slate-700 hover:border-red-400 dark:hover:border-red-500 hover:shadow-lg transition-all p-5 focus:outline-none focus:ring-4 focus:ring-red-400 overflow-hidden"
           >
             <div className="absolute left-0 top-0 bottom-0 w-1.5 rounded-l-2xl bg-gradient-to-b from-red-400 to-red-600" />
             <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-red-50 shrink-0 group-hover:scale-110 transition-transform ml-2">
               <Receipt className="w-6 h-6 text-red-500" />
             </div>
             <div className="text-left flex-1 min-w-0">
-              <p className="text-base font-bold text-gray-800 group-hover:text-red-600 transition-colors leading-tight">
+              <p className="text-base font-bold text-gray-800 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors leading-tight">
                 Pending Bills
               </p>
               <p className="text-xs text-gray-400 mt-0.5">{pendingBills.length} bills · {totalDue} due</p>
@@ -263,14 +263,14 @@ export default function MainMenu() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.38 }}
             onClick={() => navigate('/categories')}
-            className="group relative flex items-center gap-4 bg-white rounded-2xl shadow-md border-2 border-gray-100 hover:border-teal-400 hover:shadow-lg transition-all p-5 focus:outline-none focus:ring-4 focus:ring-teal-400 overflow-hidden"
+            className="group relative flex items-center gap-4 bg-white dark:bg-slate-800 rounded-2xl shadow-md border-2 border-gray-100 dark:border-slate-700 hover:border-teal-400 dark:hover:border-teal-500 hover:shadow-lg transition-all p-5 focus:outline-none focus:ring-4 focus:ring-teal-400 overflow-hidden"
           >
             <div className="absolute left-0 top-0 bottom-0 w-1.5 rounded-l-2xl bg-gradient-to-b from-teal-400 to-teal-600" />
             <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-teal-50 shrink-0 group-hover:scale-110 transition-transform ml-2">
               <LayoutGrid className="w-6 h-6 text-teal-600" />
             </div>
             <div className="text-left flex-1 min-w-0">
-              <p className="text-base font-bold text-gray-800 group-hover:text-teal-700 transition-colors leading-tight">
+              <p className="text-base font-bold text-gray-800 dark:text-white group-hover:text-teal-700 dark:group-hover:text-teal-400 transition-colors leading-tight">
                 {t('otherDept')}
               </p>
               <p className="text-xs text-gray-400 mt-0.5">{t('otherDeptDesc')}</p>
@@ -307,7 +307,7 @@ export default function MainMenu() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8 }}
-        className="absolute bottom-4 left-5 flex items-center gap-3 bg-white/70 border border-gray-100 rounded-xl px-4 py-3"
+        className="absolute bottom-4 left-5 flex items-center gap-3 bg-white/70 dark:bg-slate-800/70 border border-gray-100 dark:border-slate-700 rounded-xl px-4 py-3"
       >
         <div className="bg-white rounded-lg p-1 border border-gray-100 shrink-0">
           <img
@@ -318,7 +318,7 @@ export default function MainMenu() {
         </div>
         <div className="flex flex-col gap-0.5">
           <p className="text-[10px] text-gray-400 font-medium uppercase tracking-widest leading-none">📱 Scan to get</p>
-          <p className="text-sm font-bold text-assam-blue leading-tight">Download<br/>SUVIDHA App</p>
+          <p className="text-sm font-bold text-assam-blue dark:text-blue-400 leading-tight">Download<br/>SUVIDHA App</p>
           <p className="text-[10px] text-gray-400 leading-snug">Google Play &amp; App Store</p>
         </div>
       </motion.div>

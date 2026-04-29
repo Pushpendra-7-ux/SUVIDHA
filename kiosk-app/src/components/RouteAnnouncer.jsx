@@ -8,7 +8,7 @@ import { useAccessibilityContext } from '../context/AccessibilityContext'
  */
 export default function RouteAnnouncer() {
   const location = useLocation()
-  const { screenReaderEnabled, announcePage } = useAccessibilityContext()
+  const { screenReaderEnabled, announcePage, readEntirePage } = useAccessibilityContext()
 
   useEffect(() => {
     if (!screenReaderEnabled) return
@@ -37,11 +37,14 @@ export default function RouteAnnouncer() {
 
     const pageName = getPageName(location.pathname)
     
-    // Announce the page name with a brief delay to allow DOM to update
+    // Announce the page name and immediately read the rest of the page
+    announcePage(pageName)
+    
+    // Small generic delay just to ensure DOM finishes painting before querying text
     setTimeout(() => {
-      announcePage(pageName)
-    }, 300)
-  }, [location.pathname, screenReaderEnabled, announcePage])
+      readEntirePage('main-content')
+    }, 150)
+  }, [location.pathname, screenReaderEnabled, announcePage, readEntirePage])
 
   return null
 }

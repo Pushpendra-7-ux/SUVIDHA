@@ -31,6 +31,7 @@ import AccessibilityBar from './components/AccessibilityBar'
 import RouteAnnouncer from './components/RouteAnnouncer'
 import OnScreenKeyboard from './components/OnScreenKeyboard'
 import { KeyboardProvider } from './context/KeyboardContext'
+import AIChatbot from './components/AIChatbot'
 
 function OfflineBanner() {
   const [isOffline, setIsOffline] = useState(!navigator.onLine)
@@ -76,6 +77,8 @@ function App() {
           <RouteAnnouncer />
           {/* Global On-Screen Keyboard — renders as fixed overlay */}
           <OnScreenKeyboard />
+          {/* Global AI Chatbot */}
+          <AIChatbot />
           <main id="main-content" role="main" className="flex-1 overflow-hidden">
             <Routes>
               {/* Kiosk terminal screens */}

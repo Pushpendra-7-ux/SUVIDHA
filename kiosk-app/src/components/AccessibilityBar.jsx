@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Sun, Moon, Volume2, VolumeX, Globe, Keyboard } from "lucide-react";
+import { Sun, Moon, Volume2, VolumeX, Globe, Keyboard, Contrast } from "lucide-react";
 import { useLanguage } from '../context/LanguageContext';
 import { useAccessibilityContext } from '../context/AccessibilityContext';
 import { useKeyboard } from '../context/KeyboardContext';
@@ -8,8 +8,7 @@ const LANGUAGES = [
   { code: "en", label: "English" },
   { code: "as", label: "অসমীয়া" },
   { code: "hi", label: "हिन्दी" },
-  { code: "ur", label: "اردو" },
-  { code: "mr", label: "मराठी" },
+  { code: "kn", label: "ಕನ್ನಡ" },
 ];
 
 const MIN_SCALE = 0.85;
@@ -18,19 +17,11 @@ const STEP = 0.1;
 
 export default function AccessibilityBar() {
   const { lang, setLang, t } = useLanguage();
-  const { screenReaderEnabled, toggleScreenReader, announce } = useAccessibilityContext();
+  const { 
+    displayMode, setDisplayMode, 
+    screenReaderEnabled, toggleScreenReader, announce 
+  } = useAccessibilityContext();
   const { isOpen, openKeyboard } = useKeyboard();
-
-  /* ── Theme ─────────────────────────────────────── */
-  const [isDark, setIsDark] = useState(() => {
-    const saved = localStorage.getItem("kiosk-theme");
-    return saved ? saved === "dark" : false;
-  });
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", isDark);
-    localStorage.setItem("kiosk-theme", isDark ? "dark" : "light");
-  }, [isDark]);
 
   /* ── Font Scale ────────────────────────────────── */
   const [fontScale, setFontScale] = useState(() => {
@@ -55,10 +46,22 @@ export default function AccessibilityBar() {
     setFontScale(1);
   }, []);
 
-  /* ── Language ───────────────────────────────────── */
-  // Pulled from LanguageContext
+  /* ── Handlers ───────────────────────────────────── */
+  const toggleDark = () => {
+    if (displayMode === 'dark') {
+      setDisplayMode('light');
+    } else {
+      setDisplayMode('dark');
+    }
+  };
 
-  const currentLang = LANGUAGES.find((l) => l.code === lang) || LANGUAGES[0];
+  const toggleHighContrast = () => {
+    if (displayMode === 'high-contrast') {
+      setDisplayMode('light');
+    } else {
+      setDisplayMode('high-contrast');
+    }
+  };
 
   /* ── Render ─────────────────────────────────────── */
   return (
@@ -67,16 +70,30 @@ export default function AccessibilityBar() {
       role="toolbar"
       aria-label="Accessibility controls"
     >
-      {/* Theme Toggle */}
-      <button
-        className="a11y-btn"
-        onClick={() => setIsDark((d) => !d)}
-        aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-        title={isDark ? t('light') : t('dark')}
-      >
-        {isDark ? <Sun size={16} /> : <Moon size={16} />}
-        <span className="a11y-btn-text">{isDark ? t('light') : t('dark')}</span>
-      </button>
+      {/* Theme Toggles */}
+      <div className="a11y-group" role="group" aria-label="Theme controls">
+        <button
+          className={`a11y-btn ${displayMode === 'dark' ? 'a11y-btn--active' : ''}`}
+          onClick={toggleDark}
+          aria-label={displayMode === 'dark' ? "Switch to light mode" : "Switch to dark mode"}
+          title={displayMode === 'dark' ? t('light') || 'Light' : t('dark') || 'Dark'}
+          aria-pressed={displayMode === 'dark'}
+        >
+          {displayMode === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+          <span className="a11y-btn-text hidden sm:inline">{displayMode === 'dark' ? t('light') || 'Light' : t('dark') || 'Dark'}</span>
+        </button>
+
+        <button
+          className={`a11y-btn ${displayMode === 'high-contrast' ? 'a11y-btn--active' : ''}`}
+          onClick={toggleHighContrast}
+          aria-label="Toggle high contrast mode"
+          title="High Contrast"
+          aria-pressed={displayMode === 'high-contrast'}
+        >
+          <Contrast size={16} />
+          <span className="a11y-btn-text hidden sm:inline">High Contrast</span>
+        </button>
+      </div>
 
       {/* Divider */}
       <span className="a11y-divider" aria-hidden="true" />
@@ -132,7 +149,7 @@ export default function AccessibilityBar() {
         title="Screen Reader"
       >
         {screenReaderEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
-        <span className="a11y-btn-text">Screen Reader</span>
+        <span className="a11y-btn-text hidden sm:inline">Screen Reader</span>
       </button>
 
       {/* Divider */}
@@ -146,7 +163,7 @@ export default function AccessibilityBar() {
         title="On-screen Keyboard"
       >
         <Keyboard size={16} />
-        <span className="a11y-btn-text">Keyboard</span>
+        <span className="a11y-btn-text hidden sm:inline">Keyboard</span>
       </button>
 
       {/* Divider */}
